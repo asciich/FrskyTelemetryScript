@@ -2,13 +2,23 @@
 
 This is the home of the Yaapu Telemetry Script project, a [LUA](https://www.lua.org/about.html) telemetry script for the Frsky Horus and Taranis radios using the ArduPilot frsky passthru telemetry protocol.
 
-**Note: the latest pre-release versions are downloadable from the [releases](https://github.com/yaapu/FrskyTelemetryScript/releases) section** 
+**Note:**
+- **OpenTX 2.3.5 on X9D/X9D+ has a bug in handling the exit key press events: it will always quit the telemetry script!**
+- **the latest release versions are downloadable from the [clone/download](https://github.com/yaapu/FrskyTelemetryScript/archive/master.zip) button**
+- **the latest pre-release versions are downloadable from the [releases](https://github.com/yaapu/FrskyTelemetryScript/releases) section** 
+
+
+![X10](https://github.com/yaapu/FrskyTelemetryScript/raw/master/HORUS/IMAGES/x10.png)
+
+![X9D](https://github.com/yaapu/FrskyTelemetryScript/raw/master/TARANIS/IMAGES/x9d.png)
+
+![X7](https://github.com/yaapu/FrskyTelemetryScript/raw/master/TARANIS/IMAGES/x7.png)
 
 The supported radios are:
-- Taranis X9D(+) and QX7 on OpenTX 2.2.2/2.2.3
-- X-Lite on OpenTX 2.2.2/2.2.3 (by using the QX7 version)
-- Horus X10(S) and X12 on OpenTX 2.2.2/2.2.3
-- Jumper T16 on JumperTX 2.2.3 (by using the Horus version)
+- Taranis X9D(+) and QX7 on OpenTX 2.2.2 or greater
+- X-Lite on OpenTX 2.2.2 or greater (by using the QX7 version)
+- Horus X10 and X12 on OpenTX 2.2.2 or greater
+- Jumper T16 on JumperTX 2.2.3 or greater (by using the Horus version)
 
 Here you'll find
 - a **Telemetry** script for the Taranis radios: X9D,QX7 and X-Lite ([changelog](https://github.com/yaapu/FrskyTelemetryScript/raw/master/taranis-changelog.txt))
@@ -21,24 +31,17 @@ The script is also compatible with the excellent [MavlinkToPassthru](https://git
 
 Requires [OpenTX 2.2.x](http://www.open-tx.org/) and a recent release of [ArduPilot](http://ardupilot.org/ardupilot/index.html).
 
-![X10](https://github.com/yaapu/FrskyTelemetryScript/raw/master/HORUS/IMAGES/x10.png)
-
-![X9D](https://github.com/yaapu/FrskyTelemetryScript/raw/master/TARANIS/IMAGES/x9d.png)
-
-![X7](https://github.com/yaapu/FrskyTelemetryScript/raw/master/TARANIS/IMAGES/x7.png)
-
 ## Index
 
  - [display layout](#display-layout)
  - [features](#features)
  - [advanced features](#advanced-features)
- - [extra screen with up to 6 frsky sensors](#extra-screen-with-external-frsky-sensors-support)
+ - [extra screen with up to 6 frsky sensors](https://github.com/yaapu/FrskyTelemetryScript/wiki/Support-for-user-selected-Frsky-sensors)
  - [mavlinkToPassthru firmware support](#mavlinktopassthru-firmware-support)
  - [sensor discovery](https://github.com/yaapu/FrskyTelemetryScript/wiki/Telemetry-sensors-discovery)
- - [supported flight modes](#supported-flight-modes)
+ - [supported flight modes](https://github.com/yaapu/FrskyTelemetryScript/wiki/Supported-Flight-Modes)
  - [voltage sources](#voltage-sources)
  - [supported battery configurations](https://github.com/yaapu/FrskyTelemetryScript/wiki/Supported-battery-configurations)
- - [cell count detection](#cell-count-detection)
  - [airspeed vs groundspeed](#airspeed-vs-groundspeed)
  - [alerts](#alerts)
  - [telemetry reset](#telemetry-reset)
@@ -54,6 +57,10 @@ Requires [OpenTX 2.2.x](http://www.open-tx.org/) and a recent release of [ArduPi
  - [donation](#donation)
  
 ## Screenshots
+
+horus GPS maps view
+
+![X10maps](https://user-images.githubusercontent.com/30294218/65993331-4a553600-e491-11e9-94c5-acd237ef4455.png)
 
 dual battery view
 
@@ -81,25 +88,24 @@ mavlink message history
 
 ## Features
 
- - configuration menu, long press [MENU] on Taranis or [MDL] on Horus (in Widget mode refer to this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget#how-to-access-the-script-configuration-menu-while-in-widget-mode))
+ - configuration menu, long press [MENU] on Taranis or long press [SYS] on Horus (refer to this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget#how-to-access-the-script-configuration-menu-while-in-widget-mode))
  - per model configuration saved in MODELS/yaapu/modelname.cfg on Taranis, SCRIPTS/YAAPU/CFG/modelname.cfg on Horus
  - imperial and metric units for altitude and distance inherited from radio settings
  - horizontal and vertical speed units selectable from script config menu
  - flight [modes](#supported-flight-modes) based on frame type:copter,plane or rover with vocal sound support
  - artificial horizon with roll,pitch and yaw with numeric compass heading
- - vertical variometer gauge on left side of center panel
+ - vertical variometer gauge on right side of center panel
  - rangefinder with max range support in config menu
  - mini home icon on yaw compass at home angle position
- - battery voltage from 3 sources, short pressing [ENTER]/[ENCODER] cycles between the sources
+ - battery voltage from 2 sources, ( on taranis short pressing [ENTER]/[ENCODER] cycles between the sources)
    - frsky FLVSS voltage sensor if available (vs is displayed next to voltage)
    - flight controller via telemetry (fc is displayed next to voltage)
-   - frsky analog port if available (a2 is displayed next to voltage)
+ - parallel, series and independent battery wiring
  - battery lowest cell if available or cell average if not
  - battery current
  - battery capacity and battery capacity used in mAh and % with vocal alerts for 90,80,70,60,50,40,30,25,20,15,10,4 levels
  - efficiency as battery current/speed, value in mAh
- - vertical speed on left side of HUD
- - "synthetic vertical speed" calculated from altitude variations (no vspeed is sent by the autopilot in DCM mode)
+ - vertical speed (VSI) on bottom of HUD
  - altitude on right side of HUD 
  - gps altitude
  - gps fix extendend status (2D,3D,DGPS,RTK)
@@ -109,9 +115,10 @@ mavlink message history
  - rssi value
  - transmitter voltage
  - home distance
- - horizontal ground speed or airspeed (available if configured in mission planner)
+ - total travel distance calculated from speed
+ - horizontal ground speed or airspeed (available if configured in mission planner, see [here](https://github.com/yaapu/FrskyTelemetryScript#airspeed-vs-groundspeed))
  - home heading as rotating triangle
- - mavlink messages with history accessible with [PLUS]/[MINUS] or by turning the [ENCODER] buttons (in Widget mode follow this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget#mandatory-steps))
+ - mavlink messages with history accessible with [PLUS]/[MINUS] on Taranis or by accessing the dedicated page on Horus (on Horus check  this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget#mandatory-steps))
  - english, italian, french and german sound files for selected events: battery levels, failsafe, flightmodes, alerts and landing
  - lcd panel backlight control for the Horus radios, see [this](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-enable-lcd-panel-backlight-support-on-X10-and-X12)
  - full telemetry reset on timer 3 reset, see [this](#telemetry-reset)
@@ -121,6 +128,7 @@ mavlink message history
 
 ## Advanced Features 
 
+- offline GPS cartography on Frsky Horus radios and Jumper T16 radios
 - dual battery support (dual FLVSS and/or dual battery from ArduPilot) short press [ENTER] on Taranis or [ENCODER] on Horus to display second battery info. If a second battery is detected there will be a "B1+B2" label on screen (in Widget mode follow this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget#optional-steps))
  - capacity ovveride for battery 1 and 2
  - tracking of min/max values for battery/cell voltage, current, altitude, ground and vertical speed, short press [MENU] on Taranis or [SYS] on Horus to display them, an up pointing arrow will indicate max values whereas a down pointing arrow will indicate min values (in Widget mode follow this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget#optional-steps))
@@ -141,12 +149,13 @@ mavlink message history
 Version 1.8.0 and above introduce an extra screen reachable by pressing [ENTER] from the status message history.
 This screen adds support for up to 6 user selected frsky sensors to be displayed on screen.
 
+![110sensors_display](https://github.com/yaapu/FrskyTelemetryScript/blob/master/HORUS/IMAGES/x10sensors.png)
+
 ![X9Dsensors_display](https://github.com/yaapu/FrskyTelemetryScript/blob/master/TARANIS/IMAGES/x9dsensors.png)
 
 ![X7sensors_display](https://github.com/yaapu/FrskyTelemetryScript/blob/master/TARANIS/IMAGES/x7sensors.png)
 
-More info on setting them up is in the wiki.
-- guide for [taranis radios](https://github.com/yaapu/FrskyTelemetryScript/wiki/Support-for-user-selected-Frsky-sensors-on-Taranis-radios)
+Setup info in the [wiki](https://github.com/yaapu/FrskyTelemetryScript/wiki/Support-for-user-selected-Frsky-sensors)
 
 ## MavlinkToPassthru firmware support
 
@@ -163,90 +172,21 @@ By using Eric's Plus version the script can display
 
 To enable this feature please select it from the script config menu by choosing "m2f" as left panel option.
 
-## Supported Flight Modes
-
-### Copter
-
-| #  | flight mode | sound support |
-|---:|:------------|:-----------|
-|1|Stabilize|YES|
-|2|Acro|YES|
-|3|AltHold|YES|
-|4|Auto|YES|
-|5|Guided|YES|
-|6|Loiter|YES|
-|7|RTL|YES|
-|8|Circle|YES|
-|10|Land|YES|
-|12|Drift|YES|
-|14|Sport|YES|
-|15|Flip|YES|
-|16|AutoTune|YES|
-|17|PosHold|YES|
-|18|Brake|YES|
-|19|Throw|YES|
-|20|AvoidADSB|YES|
-|21|GuidedNOGPS|YES|
-|22|SmartRTL|YES|
-|23|FlowHold|YES|
-|24|Follow|YES|
-|25|ZigZag|YES|
-
-### Plane
-| #  | flight mode | sound support |
-|---:|:------------|:-----------|
-|1|Manual|YES|
-|2|Circle|YES|
-|3|Stabilize|YES|
-|4|Training|YES|
-|5|Acro|YES|
-|6|FlyByWireA|YES|
-|7|FlyByWireB|YES|
-|8|Cruise|YES|
-|9|Autotune|YES|
-|11|Auto|YES|
-|12|RTL|YES|
-|13|Loiter|YES|
-|15|AvoidADSB|YES|
-|16|Guided|YES|
-|17|Initializing|YES|
-|18|QStabilize|YES|
-|19|QHover|YES|
-|20|QLoiter|YES|
-|21|Qland|YES|
-|22|QRTL|YES|
-|23|QAutotune|YES|
-
-### Rover
-
-| #  | flight mode | sound support |
-|---:|:------------|:-----------|
-|1|Manual|YES|
-|2|Acro|YES|
-|4|Steering|YES|
-|5|Hold|YES|
-|6|Loiter|YES|
-|7|Follow|YES|
-|8|Simple|YES|
-|11|Auto|YES|
-|12|RTL|YES|
-|13|SmartRTL|YES|
-|16|Guided|YES|
-|17|Initializing|YES|
-
 ## Voltage Sources
 
-Battery voltage is tracked independentely for 3 battery sources: FLVSS, analog port A2 and flight controller. (The script can use the A2 analog voltage source from X4R and X6R receivers, a2 would be displayed next to cell voltage). In single battery mode a short press of [ENTER] on Taranis or [ENCODER] on Horus cycles between all the sources. Min value is also tracked for the 3 sources and can be shown with a [MENU] short press on Taranis or [SYS] on the Horus.
+Battery voltage is tracked independentely for 2 battery sources: FLVSS and flight controller battery monitor. In single battery mode a short press of [ENTER] on Taranis cycles between all the sources. Min value is also tracked for the 2 sources and can be shown with a [MENU] short press on Taranis.
 
 Note:If you use a second FLVSS voltage sensor the OpenTX variable has to be renamed to "Cel2"
 
 When a second battery is detected the script also tracks "aggregate" battery values and shows a "B1+B2" label in the right panel. Cell value and battery voltage is the "minimum" between the two batteries, current is summed and capacity percent is averaged. A short press of [MENU] on Taranis or [ENCODER] on the Horus will show min/max values for this aggregate view.
 
-In dual battery mode a short press of [ENTER] on the Taranis or [ENCODER] on the Horus switches from single aggregate view to individual dual battery view. Subsequent short presses of [ENTER]/[ENCODER] in this dual view will cycle between voltage sources. In dual view a short press of [MENU] on Taranis or [SYS] on Horus shows individual packs min/max values.
+In dual battery mode a short press of [ENTER] on the Taranis switches from single aggregate view to individual dual battery view. Subsequent short presses of [ENTER] in this dual view will cycle between voltage sources. In dual view a short press of [MENU] on Taranis shows individual packs min/max values.
 
-To get back to aggregate view and retain the selected voltage source short press [EXIT] on Taranis or [RTN] on Horus.
+To get back to aggregate view and retain the selected voltage source short press [EXIT] on Taranis.
 
-**Note:In widget mode voltage source cycling is not available, the voltage source has to be selected from the menu**
+For detailed info on supported battery configuration please check the [wiki](https://github.com/yaapu/FrskyTelemetryScript/wiki/Supported-battery-configurations)
+
+**Note:On the Horus voltage source has to be selected from the menu and Min/Max values are accessible by switching to the dedicated screen**
 
 ## Airspeed vs Groundspeed
 
@@ -343,45 +283,7 @@ Please check the [wiki](https://github.com/yaapu/FrskyTelemetryScript/wiki/Insta
 
 ## Installation on Horus
 
-Copy the contents of the SD folder to your radio SD Card.
-Make sure you have the /SOUNDS/yaapu0, SCRIPTS/YAAPU/CFG, SCRIPTS/YAAPU/LIB, SCRIPTS/YAAPU/IMAGES and WIDGETS/Yaapu folders.
-
-**Power cycle the radio to clear widget caches!**
-
-The script can be started in 2 ways:
-
-- **Widget** (recommended) see this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12-as-a-Widget)
-
-- **One time script** by using the yaapux.lua or yaapux.luac script, see this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-run-the-Yaapu-script-on-X10-and-X12)
-
-**Note:** For the script to control the lcd panel backlight a few extra steps are required, please follow this [guide](https://github.com/yaapu/FrskyTelemetryScript/wiki/How-to-enable-lcd-panel-backlight-support-on-X10-and-X12)
-
-The script is already compiled and only needs to be copied to the radio SD card. 
-
-The correct folder structure is
-
-- /SCRIPTS/YAAPU/CFG
-- /SCRIPTS/YAAPU/IMAGES
-- /SCRIPTS/YAAPU/yaapux.lua
-- /SCRIPTS/YAAPU/yaapux.luac
-- /SCRIPTS/YAAPU/menu.lua
-- /SCRIPTS/YAAPU/menu.luac
-- /SCRIPTS/YAAPU/LIB/copter.lua
-- /SCRIPTS/YAAPU/LIB/copter.luac
-- /SCRIPTS/YAAPU/LIB/plane.lua
-- /SCRIPTS/YAAPU/LIB/plane.luac
-- /SCRIPTS/YAAPU/LIB/rover.lua
-- /SCRIPTS/YAAPU/LIB/rover.luac
-- /SCRIPTS/YAAPU/LIB/init.lua
-- /SCRIPTS/YAAPU/LIB/init.luac
-- /SOUNDS/yaapu0/en
-- /SOUNDS/yaapu0/it
-- /SOUNDS/yaapu0/fr
-- /SOUNDS/yaapu0/de
-- /WIDGETS/Yaapu/main.lua
-- /WIDGETS/Yaapu/main.luac 
-
-**Note: On radios without the luac option enabled it is necessary to use the .lua versions**
+Please check the [wiki](https://github.com/yaapu/FrskyTelemetryScript/wiki/Installation-on-Horus-radios) for more info
 
 ## Compilation
 
@@ -429,11 +331,16 @@ Open an issue on github.com
  - Massild (X10 tester)
  - Zeek (X10 tester)
  - Vova Reznik (X10 tester)
- - [athertop](https://github.com/athertop) (X9D tester)
- - [zs6buj](https://github.com/zs6buj) (X9D tester)
+ - Greg Covey (Horus and X9D tester)
+ - Marc Dornan (Horus Tester)
+ - Markus Greinwald (Horus tester)
+ - Paul Atherton [athertop](https://github.com/athertop) (X9D tester)
+ - Eric Stockenstrom [zs6buj](https://github.com/zs6buj) (Horus and X9D tester)
+ - [qba667](https://github.com/qba667) (NV14 support)
  - [BFD Systems](https://www.bfdsystems.com/) (Horus version sponsor)
  - [Harris Aerial](https://www.harrisaerial.com/) (Horus version sponsor)
  - [Jumper](https://www.jumper.xyz) (Jumper T16 version sponsor)
+ - [Frsky](https://www.frsky-rc.com/) (Taranis X9D 2019 sponsor)
  - Craft&Theory for the passthrough protocol
 
 ## Donation
